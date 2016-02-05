@@ -17,13 +17,17 @@ var getCookie = function(params, xsrf, cb) {
         })
         .end(function(err, res) {
             if (err) {
-                return next(err)
+                return next(err);
             }
-            cb && cb(res)
+            cb && cb(res);
         })
 }
 
 var getLoginCookie = function(params, cb) {
+    if(fs.existsSync('./cookies')){
+        var cookies = fs.readFileSync('./cookies','utf-8');
+        return cb && cb(cookies);
+    }
     request
         .get('https://www.zhihu.com/')
         .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
